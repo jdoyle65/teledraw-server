@@ -11,7 +11,7 @@ import {
 } from "./TeledrawSchema";
 
 enum ErrorCode {
-  NameTaken = 1,
+  NameTaken = 4000,
   GameStarted,
 }
 
@@ -30,6 +30,19 @@ export class Teledraw extends Room<TeledrawSchema> {
     console.debug("Debug: ", ...args);
   }
 
+  onAuth(client: Client, options: any, request: any): boolean {
+    const { name } = options;
+    const users = this.state.users;
+
+    if (users[name] && users[name].isPresent) {
+      const message = `Username already taken: ${name}`;
+      console.error(message);
+      return false;
+    }
+
+    return true;
+  }
+
   onJoin(client: Client, options: any) {
     const { name } = options;
     const users = this.state.users;
@@ -38,11 +51,7 @@ export class Teledraw extends Room<TeledrawSchema> {
       if (users[name].isPresent) {
         const message = `Username already taken: ${name}`;
         console.error(message);
-        this.send(client, {
-          type: "error",
-          code: ErrorCode.NameTaken,
-          message,
-        });
+        client.close(ErrorCode.NameTaken);
         return;
       } else {
         const user = users[name];

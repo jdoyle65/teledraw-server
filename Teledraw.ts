@@ -1,6 +1,6 @@
 import fs from "fs";
 import { Room, Client } from "colyseus";
-import { ArraySchema } from "@colyseus/schema";
+import { ArraySchema, MapSchema } from "@colyseus/schema";
 import {
   TeledrawSchema,
   GameState,
@@ -26,6 +26,10 @@ export class Teledraw extends Room<TeledrawSchema> {
     this.setState(state);
   }
 
+  debug(...args: any[]) {
+    console.debug("Debug: ", ...args);
+  }
+
   onJoin(client: Client, options: any) {
     const { name } = options;
     const users = this.state.users;
@@ -42,6 +46,7 @@ export class Teledraw extends Room<TeledrawSchema> {
         return;
       } else {
         const user = users[name];
+
         if (this.state.partyLeader === user.sessionId) {
           this.state.partyLeader = client.sessionId;
         }
@@ -103,7 +108,7 @@ export class Teledraw extends Room<TeledrawSchema> {
     }
 
     user.isPresent = false;
-    this.state.sessionName[client.sessionId] = undefined;
+    this.state.sessionName[client.sessionId] = "";
     console.info(`${name} left`);
   }
 
@@ -142,6 +147,17 @@ export class Teledraw extends Room<TeledrawSchema> {
     }
 
     this.state.state = GameState.Playing;
+  }
+
+  private restartGame() {
+    console.info("Game is restarting...");
+    // Clear all the old stuff out
+    this.state.state = GameState.Lobby;
+    this.state.flipbookAssignments = new MapSchema<FlipBook>();
+    this.state.flipbooks = new MapSchema<FlipBook>();
+    this.state.reviewBook = null;
+    this.state.rotations = 0;
+    this.state.userOrder = new ArraySchema<string>();
   }
 
   private initFlipbook(name: string, prompt: string): FlipBook {
@@ -272,7 +288,7 @@ export class Teledraw extends Room<TeledrawSchema> {
       if (index >= this.state.userOrder.length) {
         interval.clear();
         this.clock.setTimeout(() => {
-          this.state.state = GameState.Lobby;
+          this.restartGame();
           this.clock.stop();
         }, time);
       }

@@ -2,32 +2,32 @@ import { ArraySchema, MapSchema, Schema, type } from "@colyseus/schema";
 
 export class User extends Schema {
   @type("string")
-  sessionId: string;
+  sessionId: string = "";
 
   @type("string")
-  name: string;
+  name: string = "";
 
   @type("boolean")
-  isPresent: boolean;
+  isPresent: boolean = false;
 }
 
 export class FlipBookEntry extends Schema {
   @type("string")
-  type: string;
+  type: string = "";
 
   @type("string")
-  author: string;
+  author: string = "";
 
   @type("string")
-  value: string;
+  value: string = "";
 }
 
 export class FlipBook extends Schema {
   @type("string")
-  owner: string;
+  owner: string = "";
 
   @type("string")
-  prompt: string;
+  prompt: string = "";
 
   @type([FlipBookEntry])
   entries = new ArraySchema<FlipBookEntry>();
@@ -35,10 +35,10 @@ export class FlipBook extends Schema {
 
 export class TeledrawSchema extends Schema {
   @type("string")
-  code: string;
+  code: string = "";
 
   @type("string")
-  state: string;
+  state: string = "";
 
   @type({ map: User })
   users = new MapSchema<User>();
@@ -47,7 +47,7 @@ export class TeledrawSchema extends Schema {
   sessionName = new MapSchema<string>();
 
   @type("string")
-  partyLeader: string;
+  partyLeader: string = "";
 
   @type({ map: FlipBook })
   flipbooks = new MapSchema<FlipBook>();

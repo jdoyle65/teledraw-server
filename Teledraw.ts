@@ -131,10 +131,10 @@ export class Teledraw extends Room<TeledrawSchema> {
     const promptIndices: number[] = [];
 
     this.state.userOrder.forEach(() => {
-      let randomIndex = Math.round(Math.random() * this.prompts.length - 1);
+      let randomIndex = Math.round(Math.random() * (this.prompts.length - 1));
 
       while (promptIndices.includes(randomIndex)) {
-        randomIndex = Math.round(Math.random() * this.prompts.length - 1);
+        randomIndex = Math.round(Math.random() * (this.prompts.length - 1));
       }
 
       promptIndices.push(randomIndex);

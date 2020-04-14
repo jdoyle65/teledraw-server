@@ -11,7 +11,7 @@ export class User extends Schema {
   isPresent: boolean = false;
 }
 
-export class FlipBookEntry extends Schema {
+export class FlipbookEntry extends Schema {
   @type("string")
   type: string = "";
 
@@ -20,17 +20,20 @@ export class FlipBookEntry extends Schema {
 
   @type("string")
   value: string = "";
+
+  @type("boolean")
+  doShowReview = false;
 }
 
-export class FlipBook extends Schema {
+export class Flipbook extends Schema {
   @type("string")
   owner: string = "";
 
   @type("string")
   prompt: string = "";
 
-  @type([FlipBookEntry])
-  entries = new ArraySchema<FlipBookEntry>();
+  @type([FlipbookEntry])
+  entries = new ArraySchema<FlipbookEntry>();
 }
 
 export class TeledrawSchema extends Schema {
@@ -49,11 +52,11 @@ export class TeledrawSchema extends Schema {
   @type("string")
   partyLeader: string = "";
 
-  @type({ map: FlipBook })
-  flipbooks = new MapSchema<FlipBook>();
+  @type({ map: Flipbook })
+  flipbooks = new MapSchema<Flipbook>();
 
-  @type({ map: FlipBook })
-  flipbookAssignments = new MapSchema<FlipBook>();
+  @type({ map: "string" })
+  flipbookAssignments = new MapSchema<string>();
 
   @type(["string"])
   userOrder = new ArraySchema<string>();
@@ -61,8 +64,8 @@ export class TeledrawSchema extends Schema {
   @type("number")
   rotations = 0;
 
-  @type(FlipBook)
-  reviewBook: FlipBook;
+  @type("string")
+  reviewBook: string = "";
 }
 
 export enum EntryType {

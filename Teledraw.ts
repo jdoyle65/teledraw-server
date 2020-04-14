@@ -5,8 +5,8 @@ import {
   TeledrawSchema,
   GameState,
   User,
-  FlipBook,
-  FlipBookEntry,
+  Flipbook,
+  FlipbookEntry,
   EntryType,
 } from "./TeledrawSchema";
 
@@ -17,6 +17,8 @@ enum ErrorCode {
 
 export class Teledraw extends Room<TeledrawSchema> {
   private prompts: string[] = [];
+
+  // autoDispose = false;
 
   onCreate(options: any) {
     const state = new TeledrawSchema();
@@ -99,7 +101,7 @@ export class Teledraw extends Room<TeledrawSchema> {
       case "submitGuess":
         return this.submitGuess(client, message.guess);
       case "submitDrawing":
-        return this.submitDrawing(client, message.imageDataUrl);
+        return this.submitDrawing(client, message.imageFilename);
     }
   }
 
@@ -118,7 +120,7 @@ export class Teledraw extends Room<TeledrawSchema> {
 
     user.isPresent = false;
     this.state.sessionName[client.sessionId] = "";
-    console.info(`${name} left`);
+    console.info(`${name} left. Consent: ${consented}`);
   }
 
   onDispose() {}
@@ -162,15 +164,15 @@ export class Teledraw extends Room<TeledrawSchema> {
     console.info("Game is restarting...");
     // Clear all the old stuff out
     this.state.state = GameState.Lobby;
-    this.state.flipbookAssignments = new MapSchema<FlipBook>();
-    this.state.flipbooks = new MapSchema<FlipBook>();
-    this.state.reviewBook = null;
+    this.state.flipbookAssignments = new MapSchema<string>();
+    this.state.flipbooks = new MapSchema<Flipbook>();
+    this.state.reviewBook = "";
     this.state.rotations = 0;
     this.state.userOrder = new ArraySchema<string>();
   }
 
-  private initFlipbook(name: string, prompt: string): FlipBook {
-    const flipbook = new FlipBook();
+  private initFlipbook(name: string, prompt: string): Flipbook {
+    const flipbook = new Flipbook();
     flipbook.owner = name;
     flipbook.prompt = prompt;
 
@@ -181,7 +183,7 @@ export class Teledraw extends Room<TeledrawSchema> {
     }
 
     for (let i = 0; i < this.state.userOrder.length; i++) {
-      const entry = new FlipBookEntry();
+      const entry = new FlipbookEntry();
       entry.author = this.state.userOrder[
         (i + userIndex) % this.state.userOrder.length
       ];
@@ -190,13 +192,14 @@ export class Teledraw extends Room<TeledrawSchema> {
       flipbook.entries.push(entry);
     }
 
-    this.state.flipbookAssignments[name] = flipbook.clone();
+    this.state.flipbookAssignments[name] = name;
     return flipbook;
   }
 
-  submitDrawing(client: Client, imageDataUrl: string) {
+  submitDrawing(client: Client, imageFilename: string) {
     const name = this.getClientName(client);
-    const flipbook = this.state.flipbookAssignments[name] as FlipBook;
+    const assignedName = this.state.flipbookAssignments[name];
+    const flipbook = this.state.flipbooks[assignedName] as Flipbook;
     const entry = flipbook.entries[this.state.rotations];
 
     if (!entry) {
@@ -204,7 +207,9 @@ export class Teledraw extends Room<TeledrawSchema> {
       return;
     }
 
-    entry.value = imageDataUrl;
+    entry.value = imageFilename;
+
+    console.info("attempting rotation");
     if (this.rotateFlipbooks()) {
       console.info("Rotated");
     }
@@ -212,7 +217,8 @@ export class Teledraw extends Room<TeledrawSchema> {
 
   submitGuess(client: Client, guess: string) {
     const name = this.getClientName(client);
-    const flipbook = this.state.flipbookAssignments[name] as FlipBook;
+    const assignedName = this.state.flipbookAssignments[name];
+    const flipbook = this.state.flipbooks[assignedName] as Flipbook;
     const entry = flipbook.entries[this.state.rotations];
 
     console.info(`${name} guess ${guess}`);
@@ -223,6 +229,7 @@ export class Teledraw extends Room<TeledrawSchema> {
     }
 
     entry.value = guess;
+
     if (this.rotateFlipbooks()) {
       console.info("Rotated");
     }
@@ -233,7 +240,8 @@ export class Teledraw extends Room<TeledrawSchema> {
     const rotation = Number(this.state.rotations);
 
     this.state.userOrder.forEach((name) => {
-      const flipbook = this.state.flipbookAssignments[name] as FlipBook;
+      const assignedName = this.state.flipbookAssignments[name];
+      const flipbook = this.state.flipbooks[assignedName] as Flipbook;
       const entry = flipbook.entries[rotation];
       const isSubmitted = !!entry.value;
 
@@ -244,16 +252,10 @@ export class Teledraw extends Room<TeledrawSchema> {
       return false;
     }
 
-    const newAssignments = new Map<string, FlipBook>();
-
     this.state.userOrder.forEach((name) => {
-      const flipbook = this.state.flipbookAssignments[name];
-      const nextAssignee = this.findNextAssignee(name);
-      newAssignments.set(nextAssignee, flipbook);
-    });
-
-    newAssignments.forEach((flipbook, name) => {
-      this.state.flipbookAssignments[name] = flipbook;
+      const assignedName = this.state.flipbookAssignments[name];
+      const nextAssignedName = this.findNextAssignee(assignedName);
+      this.state.flipbookAssignments[name] = nextAssignedName;
     });
 
     if (rotation + 1 >= this.state.userOrder.length) {
@@ -279,6 +281,7 @@ export class Teledraw extends Room<TeledrawSchema> {
   }
 
   private startReview() {
+    this.prepFlipbooksForReview();
     this.clock.start();
     const time = 6000;
     let max = this.state.userOrder.length - 1;
@@ -309,32 +312,35 @@ export class Teledraw extends Room<TeledrawSchema> {
     }, time);
   }
 
+  private prepFlipbooksForReview() {
+    this.state.userOrder.forEach((name) => {
+      const book = this.state.flipbooks[name] as Flipbook;
+      const oldEntries = book.entries.clone();
+      book.entries = new ArraySchema<FlipbookEntry>();
+
+      const promptEntry = new FlipbookEntry();
+      promptEntry.author = name;
+      promptEntry.type = "prompt";
+      promptEntry.value = book.prompt;
+      promptEntry.doShowReview = false;
+      book.entries.push(promptEntry);
+
+      oldEntries.forEach((e: FlipbookEntry) => book.entries.push(e));
+    });
+  }
+
   private advanceReviewFlipbook(index: number, max: number) {
     const name = this.state.userOrder[index];
-    const book: FlipBook = this.state.flipbookAssignments[name];
-    const reviewBook: FlipBook = book.clone();
-    reviewBook.entries = new ArraySchema<FlipBookEntry>();
+    const book = this.state.flipbooks[name] as Flipbook;
 
-    for (let i = book.entries.length - 1; i > max - 1; i--) {
+    for (let i = book.entries.length - 1; i > max; i--) {
       if (i >= 0) {
-        reviewBook.entries.push(book.entries[i].clone());
-      }
-
-      if (i < 0) {
-        const entry = new FlipBookEntry();
-        entry.author = name;
-        entry.type = "prompt";
-        entry.value = book.prompt;
-        reviewBook.entries.push(entry);
+        book.entries[i].doShowReview = true;
       }
     }
 
     this.clock.stop();
-    this.state.reviewBook = reviewBook;
-    console.info(
-      this.state.reviewBook.owner,
-      this.state.reviewBook.entries.length
-    );
+    this.state.reviewBook = name;
     this.clock.start();
   }
 }

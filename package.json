@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node index.ts",
     "start": "node lib/index.js",
-    "build": "tsc",
+    "build": "tsc && cp prompts.json lib/prompts.json && mkdir -p lib/uploads",
     "loadtest": "colyseus-loadtest loadtest/example.ts --room my_room --numClients 2",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

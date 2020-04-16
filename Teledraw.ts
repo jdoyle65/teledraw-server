@@ -123,7 +123,9 @@ export class Teledraw extends Room<TeledrawSchema> {
     console.info(`${name} left. Consent: ${consented}`);
   }
 
-  onDispose() {}
+  onDispose() {
+    this.clearDrawings();
+  }
 
   startGame(client: Client) {
     const promptsJson = JSON.parse(
@@ -164,11 +166,29 @@ export class Teledraw extends Room<TeledrawSchema> {
     console.info("Game is restarting...");
     // Clear all the old stuff out
     this.state.state = GameState.Lobby;
+    this.clearDrawings();
     this.state.flipbookAssignments = new MapSchema<string>();
     this.state.flipbooks = new MapSchema<Flipbook>();
     this.state.reviewBook = "";
     this.state.rotations = 0;
     this.state.userOrder = new ArraySchema<string>();
+  }
+
+  private clearDrawings() {
+    this.state.userOrder.forEach((name) => {
+      const flipbook: Flipbook = this.state.flipbooks[name];
+
+      if (flipbook) {
+        flipbook.entries.forEach((entry) => {
+          if (entry.type === EntryType.Draw) {
+            const path = `${__dirname}/uploads/${entry.value}`;
+            if (fs.existsSync(path)) {
+              fs.unlinkSync(path);
+            }
+          }
+        });
+      }
+    });
   }
 
   private initFlipbook(name: string, prompt: string): Flipbook {
@@ -207,6 +227,7 @@ export class Teledraw extends Room<TeledrawSchema> {
       return;
     }
 
+    entry.author = this.state.sessionName[client.sessionId];
     entry.value = imageFilename;
 
     console.info("attempting rotation");
@@ -228,6 +249,7 @@ export class Teledraw extends Room<TeledrawSchema> {
       return;
     }
 
+    entry.author = this.state.sessionName[client.sessionId];
     entry.value = guess;
 
     if (this.rotateFlipbooks()) {

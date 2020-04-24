@@ -1,106 +1,418 @@
 [
-  "TJ on all fours",
-  "finger food",
-  "shuttlecock",
-  "Homo erectus",
-  "photobomb",
-  "hard drive",
-  "drunk Santa",
-  "public restroom",
-  "balls deep",
-  "sausage fest",
-  "man on man",
-  "thigh gap",
-  "freshman fifteen",
-  "barefoot and pregnant",
-  "rubber gloves",
-  "leaky boob",
-  "tramp stamp",
-  "lobster bisque",
-  "ointment",
-  "crazy cat lady",
-  "bachelorette party",
-  "deep throat",
-  "balls to the wall",
-  "moist towlette",
-  "rice balls",
-  "same sex marriage",
-  "quickie",
-  "snatch",
-  "cadaver",
-  "pole dancing",
-  "horny devil",
-  "sand in your butt crack",
-  "donkey punch",
-  "white meat",
-  "pope mobile",
-  "anal probe",
-  "TJ's basement",
-  "staying the blazes home",
-  "social distancing sex",
-  "ménage à trois",
-  "trantric sex",
-  "dildo",
-  "french kiss",
-  "latex allergy",
-  "serial killer",
-  "swallow",
-  "kegels",
-  "Rogaine",
-  "stiffy",
-  "sixty-nine",
-  "liposuction",
-  "penetration",
-  "mall cop",
-  "melons",
-  "bush",
-  "skid marks",
-  "manhole",
-  "shit for brains",
-  "Burning Man",
-  "gang sign",
-  "hot flashes",
-  "5 dollar footlong",
-  "rack",
-  "mom jeans",
-  "leper",
-  "spit and polish",
-  "finger bang",
-  "breast stroke",
-  "gag me with a spoon",
-  "sexting",
-  "call of duty",
-  "head up your ass",
-  "pull out method",
-  "getting an erection in class",
-  "pubic hair on a bar of soap",
-  "just the tip",
-  "yeast",
-  "planking",
-  "sex swing",
-  "steroids",
-  "don't drop the soap",
-  "Fu Manchu",
-  "Heimlich maneuver",
-  "Right to Bear Arms",
-  "cockpit",
-  "shower scene",
-  "belly fat",
-  "cut the cheese",
-  "autoerotic asphyxiation",
-  "cunnilingus",
-  "toot your own horn",
-  "skin flute",
-  "heavy petting",
-  "bidet",
-  "Fleshlight",
-  "butter face",
-  "sticky fingers",
-  "fire in the hole",
-  "sperm bank",
-  "gay Hitler",
-  "mixed nuts",
-  "Alyssa's placenta pants",
-  "Dutch oven",
-  "Instagram sourdough"
+  {
+    "value": "TJ on all fours",
+    "isNsfw": true
+  },
+  {
+    "value": "finger food",
+    "isNsfw": false
+  },
+  {
+    "value": "shuttlecock",
+    "isNsfw": true
+  },
+  {
+    "value": "Homo erectus",
+    "isNsfw": true
+  },
+  {
+    "value": "photobomb",
+    "isNsfw": false
+  },
+  {
+    "value": "hard drive",
+    "isNsfw": false
+  },
+  {
+    "value": "drunk Santa",
+    "isNsfw": true
+  },
+  {
+    "value": "public restroom",
+    "isNsfw": false
+  },
+  {
+    "value": "balls deep",
+    "isNsfw": true
+  },
+  {
+    "value": "sausage fest",
+    "isNsfw": true
+  },
+  {
+    "value": "man on man",
+    "isNsfw": true
+  },
+  {
+    "value": "thigh gap",
+    "isNsfw": true
+  },
+  {
+    "value": "freshman fifteen",
+    "isNsfw": false
+  },
+  {
+    "value": "barefoot and pregnant",
+    "isNsfw": false
+  },
+  {
+    "value": "rubber gloves",
+    "isNsfw": false
+  },
+  {
+    "value": "leaky boob",
+    "isNsfw": true
+  },
+  {
+    "value": "tramp stamp",
+    "isNsfw": true
+  },
+  {
+    "value": "lobster bisque",
+    "isNsfw": false
+  },
+  {
+    "value": "ointment",
+    "isNsfw": false
+  },
+  {
+    "value": "crazy cat lady",
+    "isNsfw": false
+  },
+  {
+    "value": "bachelorette party",
+    "isNsfw": true
+  },
+  {
+    "value": "deep throat",
+    "isNsfw": true
+  },
+  {
+    "value": "balls to the wall",
+    "isNsfw": true
+  },
+  {
+    "value": "moist towlette",
+    "isNsfw": false
+  },
+  {
+    "value": "rice balls",
+    "isNsfw": false
+  },
+  {
+    "value": "same sex marriage",
+    "isNsfw": false
+  },
+  {
+    "value": "quickie",
+    "isNsfw": true
+  },
+  {
+    "value": "snatch",
+    "isNsfw": true
+  },
+  {
+    "value": "cadaver",
+    "isNsfw": true
+  },
+  {
+    "value": "pole dancing",
+    "isNsfw": true
+  },
+  {
+    "value": "horny devil",
+    "isNsfw": true
+  },
+  {
+    "value": "sand in your butt crack",
+    "isNsfw": true
+  },
+  {
+    "value": "donkey punch",
+    "isNsfw": true
+  },
+  {
+    "value": "white meat",
+    "isNsfw": false
+  },
+  {
+    "value": "pope mobile",
+    "isNsfw": false
+  },
+  {
+    "value": "anal probe",
+    "isNsfw": true
+  },
+  {
+    "value": "TJ's basement",
+    "isNsfw": true
+  },
+  {
+    "value": "staying the blazes home",
+    "isNsfw": false
+  },
+  {
+    "value": "social distancing sex",
+    "isNsfw": true
+  },
+  {
+    "value": "ménage à trois",
+    "isNsfw": true
+  },
+  {
+    "value": "trantric sex",
+    "isNsfw": true
+  },
+  {
+    "value": "dildo",
+    "isNsfw": true
+  },
+  {
+    "value": "french kiss",
+    "isNsfw": true
+  },
+  {
+    "value": "latex allergy",
+    "isNsfw": false
+  },
+  {
+    "value": "serial killer",
+    "isNsfw": true
+  },
+  {
+    "value": "swallow",
+    "isNsfw": true
+  },
+  {
+    "value": "kegels",
+    "isNsfw": true
+  },
+  {
+    "value": "Rogaine",
+    "isNsfw": false
+  },
+  {
+    "value": "stiffy",
+    "isNsfw": true
+  },
+  {
+    "value": "sixty-nine",
+    "isNsfw": true
+  },
+  {
+    "value": "liposuction",
+    "isNsfw": false
+  },
+  {
+    "value": "penetration",
+    "isNsfw": true
+  },
+  {
+    "value": "mall cop",
+    "isNsfw": false
+  },
+  {
+    "value": "melons",
+    "isNsfw": true
+  },
+  {
+    "value": "bush",
+    "isNsfw": true
+  },
+  {
+    "value": "skid marks",
+    "isNsfw": true
+  },
+  {
+    "value": "manhole",
+    "isNsfw": false
+  },
+  {
+    "value": "shit for brains",
+    "isNsfw": true
+  },
+  {
+    "value": "Burning Man",
+    "isNsfw": false
+  },
+  {
+    "value": "gang sign",
+    "isNsfw": false
+  },
+  {
+    "value": "hot flashes",
+    "isNsfw": false
+  },
+  {
+    "value": "5 dollar footlong",
+    "isNsfw": false
+  },
+  {
+    "value": "rack",
+    "isNsfw": true
+  },
+  {
+    "value": "mom jeans",
+    "isNsfw": false
+  },
+  {
+    "value": "leper",
+    "isNsfw": true
+  },
+  {
+    "value": "spit and polish",
+    "isNsfw": true
+  },
+  {
+    "value": "finger bang",
+    "isNsfw": true
+  },
+  {
+    "value": "breast stroke",
+    "isNsfw": true
+  },
+  {
+    "value": "gag me with a spoon",
+    "isNsfw": true
+  },
+  {
+    "value": "sexting",
+    "isNsfw": true
+  },
+  {
+    "value": "call of duty",
+    "isNsfw": false
+  },
+  {
+    "value": "head up your ass",
+    "isNsfw": true
+  },
+  {
+    "value": "pull out method",
+    "isNsfw": true
+  },
+  {
+    "value": "getting an erection in class",
+    "isNsfw": true
+  },
+  {
+    "value": "pubic hair on a bar of soap",
+    "isNsfw": true
+  },
+  {
+    "value": "just the tip",
+    "isNsfw": true
+  },
+  {
+    "value": "yeast",
+    "isNsfw": false
+  },
+  {
+    "value": "planking",
+    "isNsfw": false
+  },
+  {
+    "value": "sex swing",
+    "isNsfw": true
+  },
+  {
+    "value": "steroids",
+    "isNsfw": false
+  },
+  {
+    "value": "don't drop the soap",
+    "isNsfw": true
+  },
+  {
+    "value": "Fu Manchu",
+    "isNsfw": false
+  },
+  {
+    "value": "Heimlich maneuver",
+    "isNsfw": false
+  },
+  {
+    "value": "Right to Bear Arms",
+    "isNsfw": false
+  },
+  {
+    "value": "cockpit",
+    "isNsfw": true
+  },
+  {
+    "value": "shower scene",
+    "isNsfw": true
+  },
+  {
+    "value": "belly fat",
+    "isNsfw": false
+  },
+  {
+    "value": "cut the cheese",
+    "isNsfw": false
+  },
+  {
+    "value": "autoerotic asphyxiation",
+    "isNsfw": true
+  },
+  {
+    "value": "cunnilingus",
+    "isNsfw": true
+  },
+  {
+    "value": "toot your own horn",
+    "isNsfw": false
+  },
+  {
+    "value": "skin flute",
+    "isNsfw": true
+  },
+  {
+    "value": "heavy petting",
+    "isNsfw": true
+  },
+  {
+    "value": "bidet",
+    "isNsfw": false
+  },
+  {
+    "value": "Fleshlight",
+    "isNsfw": true
+  },
+  {
+    "value": "butter face",
+    "isNsfw": true
+  },
+  {
+    "value": "sticky fingers",
+    "isNsfw": true
+  },
+  {
+    "value": "fire in the hole",
+    "isNsfw": false
+  },
+  {
+    "value": "sperm bank",
+    "isNsfw": true
+  },
+  {
+    "value": "gay Hitler",
+    "isNsfw": true
+  },
+  {
+    "value": "mixed nuts",
+    "isNsfw": true
+  },
+  {
+    "value": "Alyssa's placenta pants",
+    "isNsfw": true
+  },
+  {
+    "value": "Dutch oven",
+    "isNsfw": true
+  },
+  {
+    "value": "Instagram sourdough",
+    "isNsfw": true
+  }
 ]

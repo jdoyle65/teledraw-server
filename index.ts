@@ -24,7 +24,7 @@ const gameServer = new Server({
 });
 
 // register your room handlers
-gameServer.define("teledraw", Teledraw).filterBy(["code"]);
+gameServer.define("teledraw", Teledraw).filterBy(["code", "nsfw"]);
 
 /**
  * Register @colyseus/social routes

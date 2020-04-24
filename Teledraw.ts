@@ -15,14 +15,21 @@ enum ErrorCode {
   GameStarted,
 }
 
+interface PromptEntry {
+  value: string;
+  isNsfw: boolean;
+}
+
 export class Teledraw extends Room<TeledrawSchema> {
   private prompts: string[] = [];
+  private nsfw = false;
 
   // autoDispose = false;
 
   onCreate(options: any) {
     const state = new TeledrawSchema();
     state.code = options.code;
+    this.nsfw = typeof options.nsfw === "boolean" ? options.nsfw : false;
     state.state = GameState.Lobby;
 
     this.setState(state);
@@ -128,19 +135,26 @@ export class Teledraw extends Room<TeledrawSchema> {
   }
 
   startGame(client: Client) {
-    const promptsJson = JSON.parse(
-      fs.readFileSync(__dirname + "/prompts.json").toString()
-    );
-
     if (this.state.partyLeader !== client.sessionId) {
       return;
     }
+
+    const promptsJson: PromptEntry[] = JSON.parse(
+      fs.readFileSync(__dirname + "/prompts.json").toString()
+    );
 
     for (let name in this.state.users) {
       this.state.userOrder.push(name);
     }
 
-    this.prompts = promptsJson;
+    if (this.nsfw) {
+      this.prompts = promptsJson.map((prompt) => prompt.value);
+    } else {
+      this.prompts = promptsJson
+        .filter((prompt) => !prompt.isNsfw)
+        .map((prompt) => prompt.value);
+    }
+
     const promptIndices: number[] = [];
 
     this.state.userOrder.forEach(() => {

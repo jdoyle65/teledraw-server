@@ -22,6 +22,7 @@ interface PromptEntry {
 
 export class Teledraw extends Room<TeledrawSchema> {
   private prompts: string[] = [];
+  private usedPromptIndices: number[] = [];
   private nsfw = false;
 
   // autoDispose = false;
@@ -157,14 +158,26 @@ export class Teledraw extends Room<TeledrawSchema> {
 
     const promptIndices: number[] = [];
 
+    // Reset the usedPromptIndices if we have used up all the prompts
+    if (
+      this.usedPromptIndices.length >
+      this.prompts.length - this.state.users.length
+    ) {
+      this.usedPromptIndices = [];
+    }
+
     this.state.userOrder.forEach(() => {
       let randomIndex = Math.round(Math.random() * (this.prompts.length - 1));
 
-      while (promptIndices.includes(randomIndex)) {
+      while (
+        promptIndices.includes(randomIndex) ||
+        this.usedPromptIndices.includes(randomIndex)
+      ) {
         randomIndex = Math.round(Math.random() * (this.prompts.length - 1));
       }
 
       promptIndices.push(randomIndex);
+      this.usedPromptIndices.push(randomIndex);
     });
 
     for (let name in this.state.users) {
